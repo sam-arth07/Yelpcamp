@@ -55,6 +55,9 @@
     </div>
     <!-- Reviews -->
     <div class="col-6">
+        <div class="mb-3">
+        <div id='map'></div>
+        </div>
         <% if(currentUser){ %>
         <h2>Leave a review</h2>
         <form
@@ -128,7 +131,7 @@
         <% } %> <% for(let review of camp.reviews){ %>
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title"><%= review.author.username %></h5>
+                <h5 class="card-title text-wrap"><%= review.author.username %></h5>
                 <p
                     class="starability-result"
                     data-rating="<%=review.rating %>"> Rated: <%= review.rating %> stars
@@ -137,8 +140,7 @@
                 <% if(currentUser && review.author.equals(currentUser._id)) {%>
                 <form
                     action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE"
-                    method="POST"
-                >
+                    method="POST">
                     <button class="btn btn-sm btn-danger">Delete</button>
                 </form>
                 <% } %>
@@ -147,3 +149,9 @@
         <% } %>
     </div>
 </div>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campground = <%- JSON.stringify(camp) %>
+</script>
+<script src="/javascripts/showPageMap.js"></script>

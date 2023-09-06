@@ -1,31 +1,43 @@
 <% layout('./layouts/boilerplate') %>
-<div class="row">
-    <div class="col-6 offset-3">
-        <h1>Login</h1>
-        <form action="/login" method="post" class="validated-form" novalidate>
-            <div class="mb-3">
-                <label class="form-label" for="username">Username</label>
-                <input
-                    class="form-control"
-                    type="text"
-                    name="username"
-                    id="username"
-                    required
-                />
-                <div class="valid-feedback">Looks good!</div>
+
+<div class="container justify-content-center align-items-center">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+            <div class="card shadow">
+                <img src="https://static.vecteezy.com/system/resources/previews/022/506/881/large_2x/sunny-day-landscape-illustration-in-flat-style-with-tent-campfire-mountains-forest-and-water-background-for-summer-camp-nature-tourism-camping-or-hiking-design-concept-free-photo.jpg" alt="" class="card-img-top"> 
+            <div class="card-body">
+                <h5 class="card-title">Login</h5>
+                <form action="/login" method="post" class="validated-form" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="username"
+                            id="username"
+                            autofocus
+                            required
+                        />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+                        <input
+                            class="form-control"
+                            type="password"
+                            name="password"
+                            id="password"
+                            required
+                        />
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="d-grid gap-2">
+                    <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">Password</label>
-                <input
-                    class="form-control"
-                    type="password"
-                    name="password"
-                    id="password"
-                    required
-                />
-                <div class="valid-feedback">Looks good!</div>
             </div>
-            <button class="btn btn-primary">Submit</button>
-        </form>
+        </div>
     </div>
+    
 </div>
