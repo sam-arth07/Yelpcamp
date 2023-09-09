@@ -1,8 +1,6 @@
-// if (process.env.NODE_ENV !== "production") {
-//     require('dotenv').config()
-// }
-require("dotenv").config();
-process.env.NODE_ENV = "production";
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
 
 const express = require("express");
 const path = require("path");
@@ -21,8 +19,9 @@ const userRouter = require("./routes/users.js");
 const campgroundRouter = require("./routes/campgrounds");
 const reviewRouter = require("./routes/reviews");
 const mongoSanitize = require("express-mongo-sanitize");
-const dbUrl = process.env.DB_URL;
 const MongoStore = require("connect-mongo");
+
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/Yelp-Camp";
 
 mongoose
     .connect(dbUrl)
@@ -88,11 +87,13 @@ app.use(
     })
 );
 
+const secret = process.env.SECRET || "OrewaKaizokuNiNaruo!";
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: process.env.SECRET,
+        secret,
     },
 });
 
@@ -103,7 +104,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: "TherapySession",
-    secret: process.env.SECRET,
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -123,7 +124,6 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user ? req.user:null;
-    console.log(currentUser);
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
