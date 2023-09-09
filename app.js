@@ -21,7 +21,7 @@ const userRouter = require("./routes/users.js");
 const campgroundRouter = require("./routes/campgrounds");
 const reviewRouter = require("./routes/reviews");
 const mongoSanitize = require("express-mongo-sanitize");
-const dbUrl = "mongodb://localhost:27017/Yelp-Camp";
+const dbUrl = process.env.DB_URL;
 const MongoStore = require("connect-mongo");
 
 mongoose
@@ -92,7 +92,7 @@ const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: "OrewaKaizokuNiNaruo!",
+        secret: process.env.SECRET,
     },
 });
 
@@ -103,7 +103,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: "TherapySession",
-    secret: "OrewaKaizokuNiNaruo!",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -122,7 +122,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
+    res.locals.currentUser = req.user ? req.user:null;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
