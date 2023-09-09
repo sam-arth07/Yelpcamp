@@ -21,9 +21,11 @@ const userRouter = require("./routes/users.js");
 const campgroundRouter = require("./routes/campgrounds");
 const reviewRouter = require("./routes/reviews");
 const mongoSanitize = require("express-mongo-sanitize");
+const dbUrl = "mongodb://localhost:27017/Yelp-Camp";
+const MongoStore = require("connect-mongo");
 
 mongoose
-    .connect("mongodb://localhost:27017/Yelp-Camp")
+    .connect(dbUrl)
     .then(() => console.log("Mongo DB connection successful"))
     .catch((err) => console.log(err));
 
@@ -55,8 +57,7 @@ const styleSrcUrls = [
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css",
 ];
 const connectSrcUrls = [
     "https://api.mapbox.com/",
@@ -78,15 +79,29 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/doqqtrkyb/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://res.cloudinary.com/doqqtrkyb/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
                 "https://images.unsplash.com/",
+                "https://static.vecteezy.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
     })
 );
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: "OrewaKaizokuNiNaruo!",
+    },
+});
+
+store.on("error", function (e) {
+    console.log("session store error!!!", e);
+});
+
 const sessionConfig = {
+    store,
     name: "TherapySession",
     secret: "OrewaKaizokuNiNaruo!",
     resave: false,
